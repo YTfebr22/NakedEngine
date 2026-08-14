@@ -3,7 +3,10 @@ project(nakedengine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(nakedengine engine/main.cpp)
+add_executable(nakedengine engine/main.cpp
+        glad/src/glad.c
+        engine/api/Api.h
+)
 
 file(
         DOWNLOAD
@@ -25,5 +28,7 @@ CPMAddPackage(
 )
 
 find_package(OpenGL REQUIRED)
+
+target_include_directories(nakedengine PRIVATE glad/include)
 
 target_link_libraries(nakedengine PRIVATE glfw OpenGL::GL)
