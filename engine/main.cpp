@@ -14,9 +14,13 @@ int main() {
         Window engine;
 
         engine.ContextCurrent();
-        engine.loop();
-        glViewport(0, 0, WIDTH, HEIGHT);
 
+       Shader shader;
+
+        std::string text = shader.ReadShaderFromFile("vertex.vert");
+        std::cout << text << std::endl;
+
+        engine.loop();
         return 0;
     } catch (const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;

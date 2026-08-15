@@ -6,7 +6,10 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(nakedengine engine/main.cpp
         glad/src/glad.c
         engine/api/Api.h
+        engine/api/Api.cpp
 )
+
+add_executable(nakedengine-tests tests/test.cpp engine/api/Api.cpp engine/api/Api.h)
 
 file(
         DOWNLOAD
@@ -27,8 +30,22 @@ CPMAddPackage(
         "GLFW_BUILD_DOCS OFF"
 )
 
+CPMAddPackage(
+        NAME googletest
+        GITHUB_REPOSITORY google/googletest
+        GIT_TAG release-1.12.1
+        VERSION 1.12.1
+        OPTIONS "INSTALL_GTEST OFF" "gtest_force_shared_crt"
+)
+
+
 find_package(OpenGL REQUIRED)
 
 target_include_directories(nakedengine PRIVATE glad/include)
+target_include_directories(nakedengine-tests PRIVATE engine/api glad/include)
 
-target_link_libraries(nakedengine PRIVATE glfw OpenGL::GL)
+target_link_libraries(nakedengine PRIVATE glfw OpenGL::GL )
+target_link_libraries(nakedengine-tests PRIVATE gtest gtest_main glfw OpenGL::GL)
+
+include(GoogleTest)
+gtest_discover_tests(nakedengine-tests)

@@ -1,7 +1,10 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
+// #include "glad/glad.h"
 #include <GLFW/glfw3.h>
 
 
@@ -37,5 +40,20 @@ public:
             glfwSwapBuffers(mwindow);
             glfwPollEvents();
         }
+    }
+};
+
+class Renderer;
+class Shader {
+private:
+    std::stringstream ss;
+public:
+    std::string ReadShaderFromFile(const std::string& FileName) {
+        std::ifstream file("/home/twst/git/NakedEngine/engine/Shaders/" + FileName);
+        if (!file.is_open()) {
+            throw std::runtime_error("Could not open shader file");
+        }
+        ss << file.rdbuf();
+        return ss.str();
     }
 };
